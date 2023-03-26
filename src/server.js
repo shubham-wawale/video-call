@@ -1,12 +1,20 @@
 const express = require('express');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
 
 const app = express();
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
+const dbURL = "mongodb+srv://shubham:1JKXPvVgWyJaIOiY@cluster0.nulpb.mongodb.net/CompanyDB?retryWrites=true&w=majority"
 //const { createClient } = require('redis');
 //const redisAdapter = require('@socket.io/redis-adapter');
+
+//set mongoose parameters
+const Checklist = new mongoose.model("InterviewChecklist", {
+    companyId: {type: String},
+    items: {type: Array, "default":[]}
+})
 
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(httpServer, {
@@ -60,7 +68,7 @@ app.get('/', (req, res) => {
 io.on("connection", socket => {
     console.log('socket connected..', socket.id);
 
-    console.log(process.env.HOST_NAME);
+    var room = ""
 
     socket.on('content_change', (data) => {
         const room = data.documentId;
@@ -68,7 +76,8 @@ io.on("connection", socket => {
     });
 
     socket.on('register', function (data) {
-        const room = data.documentId;
+        console.log("register_socket:", data)
+        room = data.documentId;
         socket.nickname = data.handle;
         socket.join(room);
         let members = [];
@@ -78,7 +87,7 @@ io.on("connection", socket => {
                 name: io.sockets.sockets.get(clientId).nickname
             });
         }
-        console.log(members);
+
         io.in(room).emit('members', members);
         socket.to(room).emit('register', { id: socket.id, name: data.handle });
     });
@@ -94,10 +103,29 @@ io.on("connection", socket => {
     });
 
     socket.on("message", (data) => {
-        console.log(data);
+
         io.to(data.id).emit("createMessage", data.message, data.name);
         //console.log(userName)
     });
+
+    socket.on("load-checklist-items", (data) => {
+
+        var checklistItems = []
+        Checklist.findOne({companyId: data.companyId}).then(d=> {
+            console.log(d.items)
+            io.to(data.documentId).emit("load-items", d.items);
+        })
+    })
+
+    socket.on("send_scores", (data)=> {
+        Checklist.updateOne({companyId: data.companyId}, {items: data.checklistScores})
+        .then(update=> {
+            update.matchedCount ===1 ? io.to(room).emit("update_sent_scores", {success: true}) :
+            io.to(room).emit("update_sent_scores", {success: false})
+        }).catch(err=> {
+            io.to(room).emit("update_sent_scores", {success: false, error: err})
+        })
+    })
 
     socket.on('disconnect', function (data) {
         console.log("Disconnected");
@@ -105,7 +133,11 @@ io.on("connection", socket => {
     });
 });
 
+mongoose.connect(dbURL).then(() => {
+    console.log(`Conneted to mongoDB at port 27017`);
+  });
 
-httpServer.listen(process.env.PORT || 3000  , () =>{
-    console.log('Server is up on port '+ 3000);
+
+httpServer.listen(process.env.PORT || 4000  , () =>{
+    console.log('Server is up on port '+ 4000);
 });

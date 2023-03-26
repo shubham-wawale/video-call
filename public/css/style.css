@@ -18,10 +18,10 @@ font-family: 'Rubik', sans-serif; */
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(../img//svg.png);
+  /* background-image: url(../img//svg.png); */
   background-repeat: no-repeat;
   background-size: contain;
-  background-color: #161d29;
+  /* background-color: #161d29; */
   background-position: bottom;
 }
 
@@ -44,7 +44,7 @@ font-family: 'Rubik', sans-serif; */
 }
 .register-flex-1 {
   color: #eeeeee;
-  font-family: "Luckiest Guy", cursive;
+  /* font-family: "Luckiest Guy", cursive; */
   font-size: 2rem;
   text-align: center;
   height: 20%;
@@ -92,6 +92,10 @@ font-family: 'Rubik', sans-serif; */
   text-decoration: none;
 }
 
+.changeTabs {
+  float: right;
+}
+
 /* Editor's page */
 * {
   margin: 0;
@@ -100,7 +104,7 @@ font-family: 'Rubik', sans-serif; */
 
 .editor-flex-1 {
   color: #eeeeee;
-  font-family: "Luckiest Guy", cursive;
+  /* font-family: "Luckiest Guy", cursive; */
   font-size: 2rem;
   text-align: center;
   height: 15%;
@@ -163,6 +167,7 @@ font-family: 'Rubik', sans-serif; */
   padding: 1px 8px 0 5px;
   color: #c8d2d7;
   font-size: 14px;
+  background: #364450;
 }
 
 .CodeMirror-lines {
@@ -249,6 +254,21 @@ video {
   margin: 0 0.5rem;
 }
 
+.new__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  height: auto;
+  border-radius: 5px;
+  color: var(--main-light);
+  font-size: 1.2rem;
+  width: auto;
+  margin: 0 0.2rem;
+  padding: 2px;
+  display: inline-block;
+}
+
 .background__red {
   background-color: #f6484a;
 }
@@ -257,7 +277,7 @@ video {
   display: flex;
   flex-direction: column;
   width: 24%;
-  background-color: #242f41;
+  background-color: #364450;
 }
 
 .main__chat_window {
@@ -288,6 +308,19 @@ video {
   color: var(--main-light);
   font-size: 1.2rem;
   width: 50px;
+  margin: 0 0 0 10px;
+}
+
+.submit__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  height: 80%;
+  border-radius: 5px;
+  color: var(--main-light);
+  font-size: 1.2rem;
+  width: 100%;
   margin: 0 0 0 10px;
 }
 .main__message_container > input {
