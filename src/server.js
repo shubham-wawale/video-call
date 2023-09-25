@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
-const dbURL = "mongodb+srv://shubham:1JKXPvVgWyJaIOiY@cluster0.nulpb.mongodb.net/CompanyDB?retryWrites=true&w=majority"
+const dbURL = "mongodb+srv://shubham:P4c6y6Rg1NmLPbIh@cluster0.nulpb.mongodb.net/CompanyDB?retryWrites=true&w=majority"
 //const { createClient } = require('redis');
 //const redisAdapter = require('@socket.io/redis-adapter');
 
